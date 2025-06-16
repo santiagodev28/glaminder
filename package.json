@@ -1,0 +1,27 @@
+{
+  "name": "glaminder_1",
+  "version": "1.0.0",
+  "description": "backend_glaminder",
+  "homepage": "https://github.com/santiagodev28/glaminder#readme",
+  "bugs": {
+    "url": "https://github.com/santiagodev28/glaminder/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santiagodev28/glaminder.git"
+  },
+  "license": "ISC",
+  "author": "santiago_hurtado",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
