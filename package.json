@@ -13,11 +13,12 @@
   "license": "ISC",
   "author": "santiago_hurtado",
   "type": "module",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
     "mysql": "^2.18.1"
   },

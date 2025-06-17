@@ -2,7 +2,7 @@ START TRANSACTION;
 -- Base de datos: glaminderdb
 
 DROP DATABASE IF EXISTS `glaminderdb`;
-CREATE DATABASE `glaminderbd`;
+CREATE DATABASE `glaminderdb`;
 USE `glaminderdb`;
 
 DROP TABLE IF EXISTS `roles`, `usuarios`, `empleados`, `propietarios`, `negocios`, `tiendas`, `servicios`, `calificaciones`, `calificaciones_negocios`, `calificaciones_empleados`, `horarios`, `citas`;
@@ -13,7 +13,7 @@ CREATE TABLE `roles` (
   `rol_nombre` VARCHAR(50)
 );
 
--- Datos iniciales
+-- Datos Roles
 INSERT INTO `roles` (`rol_id`,`rol_nombre`) VALUES 
 (1,'Administrador'),
 (2,'Propietario'),
@@ -26,11 +26,19 @@ CREATE TABLE `usuarios` (
   `usuario_nombre` VARCHAR(100),
   `usuario_apellido` VARCHAR(100),
   `usuario_correo` VARCHAR(150) UNIQUE,
-  `usuario_telefono` INT(10),
+  `usuario_telefono` VARCHAR(10),
   `usuario_contrasena` VARCHAR(255),
-  `usuario_fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `usuario_fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `rol_id` INT
 );
+
+-- Datos Usuarios
+INSERT INTO `usuarios` (`usuario_id`,`usuario_nombre`,`usuario_apellido`, `usuario_correo`,`usuario_telefono`,`usuario_contrasena`,`rol_id`) VALUES 
+(1,'Santiago','Hurtado','shurtado308@gmail.com','3108778515','1033702510',1),
+(2,'Ana', 'Sanchez', 'ana@gmail.com','3006547890', '1029384756', 1),
+(3,'Alejandro', 'Pedreros', 'alejo@hotmail.com', '3201234567', '1001122334', 2),
+(4,'Camilo','Peralta', 'cam@gmail.com', '3201239900', '1002355334', 3),
+(5,'Sharon','Rivera', 'sao@gmail.com', '3204561235', '1001120000', 4);
 
 -- Tabla empleados
 CREATE TABLE `empleados` (
@@ -40,11 +48,21 @@ CREATE TABLE `empleados` (
   `empleado_especialidad` VARCHAR(100)
 );
 
+-- Datos Empleados
+INSERT INTO `empleados` (`empleado_id`,`usuario_id`,`tienda_id`, `empleado_especialidad`) VALUES 
+(1,4,1,'Barbero');
+
+
+
 -- Tabla propietarios
 CREATE TABLE `propietarios` (
   `propietario_id` INT AUTO_INCREMENT PRIMARY KEY,
   `usuario_id` INT
 );
+
+-- Datos Propietarios
+INSERT INTO `propietarios` (`propietario_id`,`usuario_id`) VALUES
+(1,3);
 
 -- Tabla negocios
 CREATE TABLE `negocios` (
@@ -57,6 +75,11 @@ CREATE TABLE `negocios` (
   `negocio_fecha_registro` DATETIME
 );
 
+-- Datos Negocios
+INSERT INTO `negocios` (`negocio_id`,`propietario_id`,`negocio_nombre`,`negocio_telefono`,`negocio_correo`,`negocio_descripcion`) VALUES
+(1,1,'Exclusivos','3213119804','exclusi@gmail.com','Empresa de belleza dedicada al servicio de barberia ubicada en la ciudad de bogota.');
+
+
 -- Tabla tiendas
 CREATE TABLE `tiendas` (
   `tienda_id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -66,11 +89,13 @@ CREATE TABLE `tiendas` (
   `tienda_telefono` VARCHAR(10),
   `tienda_correo` VARCHAR(150),
   `tienda_ciudad` VARCHAR(50),
-  `tienda_latitud` DECIMAL(10,8),
-  `tienda_longitud` DECIMAL(11,8),
   `tienda_activa` BOOLEAN,
   `tienda_fecha_apertura` DATE
 );
+
+-- Datos Tiendas
+INSERT INTO `tiendas` (`tienda_id`,`negocio_id`,`tienda_nombre`,`tienda_direccion`,`tienda_telefono`,`tienda_correo`,`tienda_ciudad`,`tienda_activa`,`tienda_fecha_apertura`) VALUES
+(1,1,'Exclusivos VIP','Tv. 5r Bis #04, Cdad. Bolívar','3123534739','excluvip@gmail.com', 'Bogotá', 1, '2020-01-01');
 
 -- Tabla servicios
 CREATE TABLE `servicios` (
@@ -82,6 +107,11 @@ CREATE TABLE `servicios` (
   `servicio_duracion` INT,  
   `servicio_categoria` VARCHAR(50)
 );
+-- Datos Servicios
+INSERT INTO `servicios` (`servicio_id`,`tienda_id`,`servicio_nombre`,`servicio_descripcion`,`servicio_precio`,`servicio_duracion`,`servicio_categoria`) VALUES
+(1, 1, 'Corte de Cabello Clasico', 'Corte profesional clasico para hombre.', 15000.00, 30, 'Corte de Cabello Hombre'),
+(2, 1, 'Corte de Cabello Cuchilla', 'Corte profesional Moderno con cuchilla para hombre.', 20000.00, 45, 'Corte de Cabello Hombre');
+
 
 -- Tabla calificaciones
 CREATE TABLE `calificaciones` (
@@ -93,17 +123,27 @@ CREATE TABLE `calificaciones` (
   `calificacion_fecha` DATETIME
 );
 
+-- Datos Calificaciones
+INSERT INTO `calificaciones` (`calificacion_id`,`usuario_id`,`calificacion_puntuacion`,`calificacion_comentario`,`calificacion_imagen`,`calificacion_fecha`) VALUES
+(1, 1, 5, 'Excelente servicio', 'imagen.jpg','2025-05-26 00:19:56');
+
 -- Tabla calificaciones_negocios
 CREATE TABLE `calificaciones_negocios` (
   `negocio_id` INT,
   `calificacion_id` INT
 );
+-- Datos Calificaciones Negocios
+INSERT INTO `calificaciones_negocios` (`negocio_id`,`calificacion_id`) VALUES
+(1, 1);
 
 -- Tabla calificaciones_empleados
 CREATE TABLE `calificaciones_empleados` (
   `calificacion_id` INT,
   `empleado_id` INT
 );
+-- Datos Calificaciones Empleados
+INSERT INTO `calificaciones_empleados` (`calificacion_id`,`empleado_id`) VALUES
+(1, 1);
 
 -- Tabla horarios
 CREATE TABLE `horarios` (
@@ -115,6 +155,9 @@ CREATE TABLE `horarios` (
   `horario_fin` TIME,
   `horario_activo` BOOLEAN
 );
+-- Datos Horarios
+INSERT INTO `horarios` (`horario_id`,`tienda_id`,`empleado_id`,`horario_dia`,`horario_inicio`,`horario_fin`,`horario_activo`) VALUES
+(1, 1, 1, 1, '09:00:00', '17:00:00', true);
 
 -- Tabla citas
 CREATE TABLE `citas` (
@@ -129,6 +172,10 @@ CREATE TABLE `citas` (
   `cita_motivo_cancelacion` TEXT,
   `cita_fecha_creacion` DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Datos Citas
+INSERT INTO `citas` (`cita_id`,`usuario_id`,`servicio_id`,`horario_id`, `empleado_id`, `tienda_id`, `cita_fecha`, `cita_estado`, `cita_motivo_cancelacion`) VALUES
+(1, 5, 1, 1, 1, 1, '2025-05-23', 'pendiente', '');
 
 -- Claves foráneas
 ALTER TABLE `usuarios` ADD FOREIGN KEY (`rol_id`) REFERENCES `roles`(`rol_id`);
