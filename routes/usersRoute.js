@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import { getAllUsers } from '../controllers/userController.js';
-import { getUserById } from '../controllers/userController.js';
-import { updateUser } from '../controllers/userController.js';
-import { deleteUser } from '../controllers/userController.js';
+import { verifyToken } from '../middlewares/verifyToken.js';
+import { authorizeRoles } from '../middlewares/authorizeRoles.js';
+import { getAllUsers, getUserById, updateUser, deleteUser } from '../controllers/usersController.js';
+
 
 
 const userRoutes = Router();
 
 // Rutas
-userRoutes.get('/', getAllUsers);
-userRoutes.get('/:usuario_id', getUserById);
-userRoutes.put('/:usuario_id', updateUser);
-userRoutes.delete('/:usuario_id', deleteUser);
+userRoutes.get('/', verifyToken, authorizeRoles(1), getAllUsers);
+userRoutes.get('/:usuario_id', verifyToken, authorizeRoles(1), getUserById);
+userRoutes.put('/:usuario_id', verifyToken, authorizeRoles(1), updateUser);
+userRoutes.delete('/:usuario_id', verifyToken, authorizeRoles(1), deleteUser);
 
 export default userRoutes;

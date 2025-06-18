@@ -236,82 +236,40 @@ export const getBusinessById = (req, res) => {
 
 // Registro de negocio
 export const registerBusiness = (req, res) => {
-    const {
-        usuario_id,
-        negocio_nombre,
-        negocio_telefono,
-        negocio_correo,
-        negocio_descripcion,
-    } = req.body;
+  const { negocio_nombre, negocio_telefono, negocio_correo, negocio_descripcion } = req.body;
+  const usuario_id = req.user.usuario_id; // viene del token verificado
 
-    // Verificar que el usuario tiene rol de propietario
-    const sqlRol = `SELECT rol_id FROM usuarios WHERE usuario_id = ?`;
-    
-    db.query(sqlRol, [usuario_id], (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
+  if (!negocio_nombre || !negocio_telefono || !negocio_correo) {
+    return res.status(400).json({ message: 'Completa todos los campos requeridos.' });
+  }
 
-        if (result.length === 0) {
-            return res.status(404).json({ error: "Usuario no encontrado" });
-        }
+  // Buscar el propietario_id con el usuario_id
+  const sqlSelectedOwner = 'SELECT propietario_id FROM propietarios WHERE usuario_id = ?';
 
-        if (result[0].rol_id != 2) {
-            return res.status(403).json({ error: "No tienes permisos para crear un negocio" });
-        }
-
-        // Buscar si ya existe un propietario para este usuario
-        const sqlFindPropietario = `SELECT propietario_id FROM propietarios WHERE usuario_id = ?`;
-        
-        db.query(sqlFindPropietario, [usuario_id], (err2, propResult) => {
-            if (err2) {
-                return res.status(500).json({ error: err2.message });
-            }
-
-            let propietario_id;
-
-            if (propResult.length > 0) {
-                // Ya existe un propietario para este usuario
-                propietario_id = propResult[0].propietario_id;
-                createBusiness(propietario_id);
-            } else {
-                // Crear nuevo propietario para este usuario
-                const sqlCreatePropietario = `INSERT INTO propietarios (usuario_id) VALUES (?)`;
-                
-                db.query(sqlCreatePropietario, [usuario_id], (err3, createResult) => {
-                    if (err3) {
-                        return res.status(500).json({ error: "Error creando propietario" });
-                    }
-                    
-                    propietario_id = createResult.insertId;
-                    createBusiness(propietario_id);
-                });
-            }
-        });
-    });
-
-    function createBusiness(propietario_id) {
-        const sqlInsert = `
-            INSERT INTO negocios (propietario_id, negocio_nombre, negocio_telefono, negocio_correo, negocio_descripcion)
-            VALUES (?, ?, ?, ?, ?)
-        `;
-
-        db.query(sqlInsert, [
-            propietario_id,
-            negocio_nombre,
-            negocio_telefono,
-            negocio_correo,
-            negocio_descripcion,
-        ], (err, results) => {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-
-            res.status(201).json({
-                message: "Negocio creado exitosamente",
-                negocio_id: results.insertId,
-                propietario_id: propietario_id
-            });
-        });
+  db.query(sqlSelectedOwner, [usuario_id], (err, resultado) => {
+    if (err || resultado.length === 0) {
+      return res.status(403).json({ message: 'Usuario no es un propietario válido.' });
     }
+
+    const propietario_id = resultado[0].propietario_id;
+
+    const sqlCreateBusiness = `
+      INSERT INTO negocios (propietario_id, negocio_nombre, negocio_telefono, negocio_correo, negocio_descripcion)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      sqlCreateBusiness,
+      [propietario_id, negocio_nombre, negocio_telefono, negocio_correo, negocio_descripcion],
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).json({ message: 'Error al crear el negocio.' });
+        }
+
+        res.status(201).json({ message: 'Negocio creado exitosamente.', negocio_id: result.insertId });
+      }
+    );
+  });
 };
+    

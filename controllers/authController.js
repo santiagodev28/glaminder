@@ -1,5 +1,6 @@
 import db from "../db/connectiondb.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 
 // Registro de usuario
@@ -28,40 +29,56 @@ export const userRegister = ('/', (req, res)=>{
 })
 
 // Inicio de sesion de usuario
-
 export const userLogin = (req, res) => {
-    const {usuario_correo, usuario_contrasena } = req.body;
+  const { usuario_correo, usuario_contrasena } = req.body;
 
-    if (!usuario_correo || !usuario_contrasena) {
-        return res.status(400).json({ message: "Porfavor completa los campos." });
+  if (!usuario_correo || !usuario_contrasena) {
+    return res.status(400).json({ message: "Por favor completa los campos." });
+  }
+
+  const sql = "SELECT * FROM usuarios WHERE usuario_correo = ?";
+
+  db.query(sql, [usuario_correo], async (error, result) => {
+    if (error) {
+      return res.status(500).json({ message: "Error al iniciar sesión." });
     }
 
-    const sql = "SELECT * FROM usuarios WHERE usuario_correo = ?";
+    if (result.length === 0) {
+      return res.status(400).json({ message: "El correo no está registrado." });
+    }
 
-    db.query(sql, [usuario_correo], async (error, result) => {
-        if (error)
-            return res.status(500).json({ message: "Error al iniciar sesion." });
-            if (result.length === 0 ){
-                return res.status(400).json({ message: "El correo no esta registrado." });
-        }
+    const user = result[0];
 
-        const user = result[0];
-        const isValid = await bcrypt.compare(usuario_contrasena, user.usuario_contrasena);
+    const isValid = await bcrypt.compare(usuario_contrasena, user.usuario_contrasena);
 
-        if (isValid) {
-            return res.status(200).json({
-                message: "Inicio de sesion exitoso.",
-                usuario: {
-                    usuario_id: user.id,
-                    usuario_nombre: user.usuario_nombre,
-                    usuario_correo: user.usuario_correo,
-                },
-            });
-        } else {
-            return res.status(400).json({ message: "Contraseña incorrecta." });
-        }
+    if (!isValid) {
+      return res.status(400).json({ message: "Contraseña incorrecta." });
+    }
+
+    // Token de autenticación
+    const token = jwt.sign(
+      {
+        usuario_id: user.usuario_id,
+        rol: user.rol_id 
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+
+    return res.status(200).json({
+      message: "Inicio de sesión exitoso.",
+      token,
+      usuario: {
+        usuario_id: user.usuario_id,
+        usuario_nombre: user.usuario_nombre,
+        usuario_correo: user.usuario_correo,
+        rol: user.rol_id
+      }
     });
+  });
 };
+
 
 
 // Obtener perfil del usuario 

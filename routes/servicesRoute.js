@@ -1,18 +1,16 @@
 import { Router } from "express";
-import { createService } from "../controllers/servicesController.js";
-import { getAllServices } from "../controllers/servicesController.js";
-import { getServiceById } from "../controllers/servicesController.js";
-import { updateService } from "../controllers/servicesController.js";
-import { deleteService } from "../controllers/servicesController.js";
+import { createService, getAllServices, getServiceById, updateService, deleteService } from "../controllers/servicesController.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
+import { authorizeRoles } from "../middlewares/authorizeRoles.js";
 
 
 const serviceRoutes = Router();
 
 // Rutas
-serviceRoutes.post('/', createService);
+serviceRoutes.post('/', verifyToken, authorizeRoles(1,2), createService);
 serviceRoutes.get('/', getAllServices);
 serviceRoutes.get('/:servicio_id', getServiceById);
-serviceRoutes.put('/:servicio_id', updateService);
-serviceRoutes.delete('/:servicio_id', deleteService);
+serviceRoutes.put('/:servicio_id', verifyToken, authorizeRoles(1,2), updateService);
+serviceRoutes.delete('/:servicio_id', verifyToken, authorizeRoles(1,2), deleteService);
 
 export default serviceRoutes;

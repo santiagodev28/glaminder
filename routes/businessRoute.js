@@ -1,19 +1,17 @@
 import { Router } from "express";
-import { registerBusiness } from "../controllers/businessController.js";
-import { getAllBusiness } from "../controllers/businessController.js";
-import { getBusinessById } from "../controllers/businessController.js";
-import { updateBusiness } from "../controllers/businessController.js";
-import { deleteBusiness } from "../controllers/businessController.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
+import { authorizeRoles } from "../middlewares/authorizeRoles.js";
+import { registerBusiness, getAllBusiness, getBusinessById, updateBusiness, deleteBusiness } from "../controllers/businessController.js";
 
 
 const businessRoutes = Router();
 
 // Rutas
-businessRoutes.post('/', registerBusiness);
+businessRoutes.post('/', verifyToken, authorizeRoles(1,2), registerBusiness);
 businessRoutes.get('/', getAllBusiness);
-businessRoutes.get('/:negocio_id', getBusinessById);
-businessRoutes.put('/:negocio_id', updateBusiness);
-businessRoutes.delete('/:negocio_id', deleteBusiness);
+businessRoutes.get('/:negocio_id', verifyToken, authorizeRoles(1,2), getBusinessById);
+businessRoutes.put('/:negocio_id', verifyToken, authorizeRoles(1,2), updateBusiness);
+businessRoutes.delete('/:negocio_id', verifyToken, authorizeRoles(1,2), deleteBusiness);
 
 
 export default businessRoutes;
