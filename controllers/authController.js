@@ -2,17 +2,8 @@ import db from "../db/connectiondb.js";
 import bcrypt from "bcrypt";
 
 
-// Obtener todos los usuarios
-export const getAllUsers = ('/', (req, res) => {
-  db.query('SELECT * FROM usuarios', (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
-});
-
-
-// Crear un nuevo usuario
-export const createUser = ('/', (req, res)=>{
+// Registro de usuario
+export const userRegister = ('/', (req, res)=>{
     let {usuario_nombre, usuario_apellido,  usuario_correo, usuario_contrasena, usuario_telefono, rol_id } = req.body;
     usuario_contrasena = bcrypt.hashSync(usuario_contrasena, 10);
 
@@ -28,51 +19,62 @@ export const createUser = ('/', (req, res)=>{
         if (rol_id == 2){
             db.query('INSERT INTO propietarios (usuario_id) VALUES (?)', [results.insertId], (err, results) => {
                 if (err) return res.status(500).json({ error: err.message });
+
             });
         }
 
-        res.json(results);
+        res.json({message: 'Usuario creado exitosamente.'});
     });
 })
 
-
-
-
-
-
-
+// Inicio de sesion de usuario
 
 export const userLogin = (req, res) => {
-    const { email, password } = req.body;
+    const {usuario_correo, usuario_contrasena } = req.body;
 
-    if (!email || !password) {
+    if (!usuario_correo || !usuario_contrasena) {
         return res.status(400).json({ message: "Porfavor completa los campos." });
     }
 
     const sql = "SELECT * FROM usuarios WHERE usuario_correo = ?";
 
-    db.query(sql, [email], async (error, res) => {
+    db.query(sql, [usuario_correo], async (error, result) => {
         if (error)
             return res.status(500).json({ message: "Error al iniciar sesion." });
-            if (res.length === 0 ){
+            if (result.length === 0 ){
                 return res.status(400).json({ message: "El correo no esta registrado." });
         }
 
-        const user = res[0];
-        const isValid = await bcrypt.compare(password, user.usuario_contrasena);
+        const user = result[0];
+        const isValid = await bcrypt.compare(usuario_contrasena, user.usuario_contrasena);
 
         if (isValid) {
             return res.status(200).json({
                 message: "Inicio de sesion exitoso.",
-                user: {
-                    id: user.id,
-                    name: user.usuario_nombre,
-                    email: user.usuario_correo,
-                    phone: user.usuario_telefono,
+                usuario: {
+                    usuario_id: user.id,
+                    usuario_nombre: user.usuario_nombre,
+                    usuario_correo: user.usuario_correo,
                 },
             });
         } else {
             return res.status(400).json({ message: "Contraseña incorrecta." });
         }
     });
+};
+
+
+// Obtener perfil del usuario 
+export const getProfile = (req, res) => {
+    const { usuario_id } = req.params;
+    db.query('SELECT * FROM usuarios WHERE usuario_id = ?', [usuario_id], (err, results) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(results);
+    });
+  };
+
+
+// Cerrar sesion de usuario 
+export const logout =  (req, res) => {
+    res.json({message: 'Sesion cerrada exitosamente.'});
 };

@@ -72,7 +72,7 @@ CREATE TABLE `negocios` (
   `negocio_telefono` VARCHAR(15),
   `negocio_correo` VARCHAR(150),
   `negocio_descripcion` TEXT,
-  `negocio_fecha_registro` DATETIME
+  `negocio_fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Datos Negocios
@@ -120,7 +120,7 @@ CREATE TABLE `calificaciones` (
   `calificacion_puntuacion` TINYINT,
   `calificacion_comentario` TEXT,
   `calificacion_imagen` TEXT,
-  `calificacion_fecha` DATETIME
+  `calificacion_fecha` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Datos Calificaciones

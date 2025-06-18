@@ -1,5 +1,9 @@
 import express from "express";
+import userRoutes from "./routes/usersRoute.js";
 import authRoutes from "./routes/authRoute.js";
+import rolRoutes from "./routes/rolRoute.js";
+import businessRoutes from "./routes/businessRoute.js";
+import serviceRoutes from "./routes/servicesRoute.js";
 
 // Configuración del Servidor Express
 const app = express();
@@ -8,7 +12,11 @@ const app = express();
 app.use(express.json());
 
 // Rutas
-app.use("/api/usuarios", authRoutes);
+app.use("/api/usuarios", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/roles", rolRoutes);
+app.use("/api/negocios", businessRoutes);
+app.use("/api/servicios", serviceRoutes);
 
 
 // Ruta Principal
