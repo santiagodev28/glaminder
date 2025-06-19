@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
+
 import userRoutes from "./routes/usersRoute.js";
 import authRoutes from "./routes/authRoute.js";
 import rolRoutes from "./routes/rolRoute.js";
@@ -11,11 +13,16 @@ import storesRoutes from "./routes/storesRoute.js";
 import scheduleRoutes from "./routes/schedulesRoutes.js";
 
 
-// Configuración de dotenv
-dotenv.config();
-
 // Configuración del Servidor Express
 const app = express();
+
+// Configuración de CORS
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
+
+// Configuración de dotenv
+dotenv.config();
 
 // Middleware
 app.use(express.json());
