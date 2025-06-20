@@ -72,6 +72,7 @@ export const userLogin = (req, res) => {
       usuario: {
         usuario_id: user.usuario_id,
         usuario_nombre: user.usuario_nombre,
+        usuario_apellido: user.usuario_apellido,
         usuario_correo: user.usuario_correo,
         rol: user.rol_id
       }

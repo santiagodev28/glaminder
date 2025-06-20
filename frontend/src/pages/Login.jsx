@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../api/api.js";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -9,7 +9,24 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [mensajeExito, setMensajeExisto] = useState("");
+    const [mostrarMensaje, setMostrarMensaje] = useState(false);
     const navigate = useNavigate();
+
+    // Mensaje de Registro exitoso
+    useEffect(() => {
+    const registroExitoso = localStorage.getItem("registroExitoso");
+    if(registroExitoso==="true"){
+        setMensajeExisto("¡Registro exitoso!");
+        setMostrarMensaje(true);
+        localStorage.removeItem("registroExitoso");
+
+        setTimeout(() => setMostrarMensaje(false), 2500);
+
+        setTimeout(() => setMensajeExisto(""), 3000);
+    } 
+    
+}, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,8 +42,12 @@ const Login = () => {
             console.log(res.data);
 
             const token = res.data.token;
+            const name = res.data.usuario.usuario_nombre;
+            const lname = res.data.usuario.usuario_apellido;
             const rol = Number(res.data.usuario.rol);
 
+            localStorage.setItem("usuario_nombre", name);
+            localStorage.setItem("usuario_apellido", lname);
             localStorage.setItem("token", token);
             localStorage.setItem("rol", rol);
 
@@ -41,8 +62,10 @@ const Login = () => {
 };
 
     return (
-        <div className= "min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg">
+                {mensajeExito && <div
+                    className={`transition-opacity duration-500 ease-in-out ${mostrarMensaje ? 'opacity-100' : 'opacity-0'} bg-green-100 text-green-700 px-4 py-2 rounded mb-4 text-center`} >  {mensajeExito}</div>}
             <h2 className="text-2xl font-bold mb-4">Iniciar sesión</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">

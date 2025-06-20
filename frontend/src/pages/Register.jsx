@@ -19,6 +19,16 @@ const Register = () => {
         e.preventDefault();
         setError("");
         setSuccess("");
+    
+        if (password !== confirmPassword) {
+            setError("Las contraseñas no coinciden.");
+            return;
+        }
+
+        if (!name || !lastName || !email || !phone || !password || !confirmPassword || !rol) {
+            setError("Por favor, complete todos los campos.");
+            return;
+        }
 
         try{
             const res = await api.post ("/auth/registro", {
@@ -30,11 +40,9 @@ const Register = () => {
                 rol_id: Number(rol)
             });
             
-            if (password !== confirmPassword) {
-            setError("Las contraseñas no coinciden.");
-            }
             setSuccess(res.data.message || "Usuario registrado exitosamente.");
-            setTimeout(() => navigate('/', 2000));
+            localStorage.setItem("registroExitoso", "true");
+            setTimeout(() => navigate('/', 1000));
                 
             }catch (error) {
             console.error(error);
@@ -44,7 +52,7 @@ const Register = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 py-8">
-            <div className="bg-white p-8 rounded-lg shadow-lg p">
+            <div className="bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-4">Registrarse</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -55,6 +63,7 @@ const Register = () => {
                             placeholder="Ingrese su nombre"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            required
                             autoFocus
                         />
                     </div>
@@ -66,17 +75,19 @@ const Register = () => {
                             placeholder="Ingrese su apellido"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
+                            required
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-gray-700 font-bold mb-2">Telefono</label>
+                        <label className="block text-gray-700 font-bold mb-2">Teléfono</label>
                         <input
-                            type="text"
+                            type="tel"
                             className="w-full p-2 border border-gray-300 rounded"
-                            placeholder="Ingrese su telefono"
+                            placeholder="Ingrese su teléfono"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -88,27 +99,30 @@ const Register = () => {
                             placeholder="Ingrese su correo"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            required
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-gray-700 font-bold mb-2">Contraseña</label>
+                        <label className="block text-gray-700 font-bold mb-2">Contraseña</label>
                         <input
                             type="password"
                             className="w-full p-2 border border-gray-300 rounded"
-                            placeholder="Ingrese su contraseña"
+                            placeholder="Ingrese su contraseña"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 font-bold mb-2">Confirmar Contraseña</label>
+                        <label className="block text-gray-700 font-bold mb-2">Confirmar Contraseña</label>
                         <input
                             type="password"
                             className="w-full p-2 border border-gray-300 rounded"
-                            placeholder="Confirme su contraseña"
+                            placeholder="Confirme su contraseña"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -117,7 +131,7 @@ const Register = () => {
                             className="w-full p-2 border border-gray-300 rounded"
                             value={rol}
                             onChange={(e) => setRol(e.target.value)}
-
+                            required
                         >
                             <option value="">Seleccione un rol</option>
                             <option value="4">Cliente</option>
@@ -130,21 +144,22 @@ const Register = () => {
 
                     <div className="flex flex-col items-center space-y-4 w-full">
                         <button
-                        type="submit"
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                         >
-                        Registrarse
+                            type="submit"
+                            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Registrarse
                         </button>
 
-                       <Link to="/" className=" text-center w-full bg-slate-600 py-2 px-4 rounded text-white hover:bg-slate-700" >Volver</Link>
+                        <Link to="/" className="text-center w-full bg-slate-600 py-2 px-4 rounded text-white hover:bg-slate-700">
+                            Volver
+                        </Link>
                     </div>
-            
-                    
                 </form>
             </div>
         </div>
     );
 };
+
 
 
 export default Register
