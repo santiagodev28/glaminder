@@ -29,6 +29,7 @@ CREATE TABLE `usuarios` (
   `usuario_telefono` VARCHAR(10),
   `usuario_contrasena` VARCHAR(255),
   `usuario_fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `usuario_estado` BOOLEAN DEFAULT 1,  
   `rol_id` INT
 );
 

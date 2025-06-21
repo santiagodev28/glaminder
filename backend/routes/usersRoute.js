@@ -11,6 +11,6 @@ const userRoutes = Router();
 userRoutes.get('/', verifyToken, authorizeRoles(1), getAllUsers);
 userRoutes.get('/:usuario_id', verifyToken, authorizeRoles(1), getUserById);
 userRoutes.put('/:usuario_id', verifyToken, authorizeRoles(1), updateUser);
-userRoutes.delete('/:usuario_id', verifyToken, authorizeRoles(1), deleteUser);
+userRoutes.put('/desactivar/:usuario_id', verifyToken, authorizeRoles(1), deleteUser);
 
 export default userRoutes;
