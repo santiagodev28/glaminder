@@ -1,11 +1,19 @@
-import app from "./app.js";
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
 
-const PORT = process.env.PORT || 3000;
+const app = express();
 
-// Inicialización del servidor
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+// Middleware
+app.use(express.json());
+
+// Configuración de CORS
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
+
+// Configuración de dotenv
+dotenv.config();
 
 import userRoutes from "./routes/usersRoute.js";
 import authRoutes from "./routes/authRoute.js";
@@ -31,4 +39,5 @@ app.use("/api/reportes", reportRoutes);
 app.use("/api/tiendas", storesRoutes);
 app.use("/api/citas", scheduleRoutes);
 
+export default app;
 

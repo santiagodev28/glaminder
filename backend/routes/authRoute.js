@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { userLogin, userRegister, getProfile, logout } from "../controllers/authController.js";
+import AuthController from "../controllers/authController.js";
 
 
 const authRoutes = Router();
 
 // Rutas
-authRoutes.post('/ingresar', userLogin);
-authRoutes.post('/registro', userRegister);
-authRoutes.get('/perfil/:usuario_id', getProfile);
-authRoutes.post('/cerrarSesion', logout);
+authRoutes.post('/ingresar', AuthController.userLogin);
+authRoutes.post('/registrar', AuthController.userRegister);
+authRoutes.post('/cerrarSesion', AuthController.logout);
 
 export default authRoutes;

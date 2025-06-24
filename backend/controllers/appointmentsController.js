@@ -1,4 +1,4 @@
-import db from "../db/connectiondb.js";
+import db from "../database/connectiondb.js";
 
 // Obtener todas las citas 
 export const getAllAppointments = ('/', (req, res) => {

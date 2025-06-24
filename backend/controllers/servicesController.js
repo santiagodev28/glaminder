@@ -1,4 +1,4 @@
-import db from "../db/connectiondb.js";
+import db from "../database/connectiondb.js";
 
 // Crear nuevo servicio en la base de datos
 export const createService = (req, res) => {

@@ -1,4 +1,4 @@
-import db from "../db/connectiondb.js";
+import db from "../database/connectiondb.js";
 
 // Obtener todas las tiendas 
 export const getAllStores = ('/', (req, res) => {

@@ -3,8 +3,7 @@ import api from "../api/api.js";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
-// Inicio de sesion 
+// Inicio de sesion
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -15,28 +14,26 @@ const Login = () => {
 
     // Mensaje de Registro exitoso
     useEffect(() => {
-    const registroExitoso = localStorage.getItem("registroExitoso");
-    if(registroExitoso==="true"){
-        setMensajeExisto("¡Registro exitoso!");
-        setMostrarMensaje(true);
-        localStorage.removeItem("registroExitoso");
+        const registroExitoso = localStorage.getItem("registroExitoso");
+        if (registroExitoso === "true") {
+            setMensajeExisto("¡Registro exitoso!");
+            setMostrarMensaje(true);
+            localStorage.removeItem("registroExitoso");
 
-        setTimeout(() => setMostrarMensaje(false), 2500);
+            setTimeout(() => setMostrarMensaje(false), 2500);
 
-        setTimeout(() => setMensajeExisto(""), 3000);
-    } 
-    
-}, [])
+            setTimeout(() => setMensajeExisto(""), 3000);
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
         try {
-
-            const res = await api.post("/auth/ingresar", { 
-                usuario_correo: email, 
-                usuario_contrasena: password 
+            const res = await api.post("/auth/ingresar", {
+                usuario_correo: email,
+                usuario_contrasena: password,
             });
 
             console.log(res.data);
@@ -57,48 +54,74 @@ const Login = () => {
             else if (rol === 4) navigate("/cliente");
         } catch (error) {
             console.error(error);
-            setError(error.response?.data?.message || "Error al iniciar sesión.");
+            setError(
+                error.response?.data?.message || "Error al iniciar sesión."
+            );
         }
-};
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg">
-                {mensajeExito && <div
-                    className={`transition-opacity duration-500 ease-in-out ${mostrarMensaje ? 'opacity-100' : 'opacity-0'} bg-green-100 text-green-700 px-4 py-2 rounded mb-4 text-center`} >  {mensajeExito}</div>}
-            <h2 className="text-2xl font-bold mb-4">Iniciar sesión</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label className = "block" htmlFor="email">Correo electrónico:</label>
-                     <input
-                    className = "border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    autoFocus
-                    />
-                </div>
+                {mensajeExito && (
+                    <div
+                        className={`transition-opacity duration-500 ease-in-out ${
+                            mostrarMensaje ? "opacity-100" : "opacity-0"
+                        } bg-green-100 text-green-700 px-4 py-2 rounded mb-4 text-center`}
+                    >
+                        {" "}
+                        {mensajeExito}
+                    </div>
+                )}
+                <h2 className="text-2xl font-bold mb-4">Iniciar sesión</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label className="block" htmlFor="email">
+                            Correo electrónico:
+                        </label>
+                        <input
+                            className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            autoFocus
+                        />
+                    </div>
 
-                <div className="mb-4">
-                    <label className = "block" htmlFor="password">Contraseña:</label>
-                    <input
-                    className = "border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    />
-                </div>
+                    <div className="mb-4">
+                        <label className="block" htmlFor="password">
+                            Contraseña:
+                        </label>
+                        <input
+                            className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
 
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Ingresar</button>
+                    {error && <p className="text-red-500 mb-4">{error}</p>}
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        type="submit"
+                    >
+                        Ingresar
+                    </button>
 
-                <p className="mt-4">¿No tienes una cuenta? <Link to="/registro" className="text-blue-500 hover:underline">Regístrate</Link></p>
-
-            </form>
+                    <p className="mt-4">
+                        ¿No tienes una cuenta?{" "}
+                        <Link
+                            to="/registro"
+                            className="text-blue-500 hover:underline"
+                        >
+                            Regístrate
+                        </Link>
+                    </p>
+                </form>
             </div>
         </div>
     );
