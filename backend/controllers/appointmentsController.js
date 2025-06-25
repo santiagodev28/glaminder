@@ -1,46 +1,98 @@
-import db from "../database/connectiondb.js";
+import { escape } from "mysql";
+import Appointment from "../models/Appointment.js";
 
-// Obtener todas las citas 
-export const getAllAppointments = ('/', (req, res) => {
-    db.query('SELECT * FROM citas', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-});
+class AppointmentController {
+    static async getAllAppointments(req, res) {
+        try {
+            const appointments = await Appointment.getAllAppointments();
+            res.json(appointments);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 
-// Obtener cita por id 
-export const getAppointmentById = (req, res) => {
-    const { cita_id } = req.params;
-    db.query('SELECT * FROM citas WHERE cita_id = ?', [cita_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-};
+    static async getAppointmentById(req, res) {
+        try {
+            const { cita_id } = req.params;
+            const appointment = await Appointment.getAppointmentById(cita_id);
+            res.json(appointment);
 
-// Crear nueva cita 
-export const createAppointment = (req, res) => {
-    const { usuario_id, tienda_id, servicio_id, cita_fecha, cita_hora } = req.body;
-    db.query('INSERT INTO citas (usuario_id, tienda_id, servicio_id, cita_fecha, cita_hora) VALUES (?, ?, ?, ?, ?)', [usuario_id, tienda_id, servicio_id, cita_fecha, cita_hora], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Cita creada exitosamente.' });
-    });
-};
+            if (!appointment) {
+                return res.status(404).json({ error: "Cita no encontrada." });
+            } else {
+                return res.status(200).json(appointment);
+            }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 
-// Actualizar una cita 
-export const updateAppointment = (req, res) => {
-    const { cita_id } = req.params;
-    const { tienda_id, servicio_id, cita_fecha, cita_hora } = req.body;
-    db.query('UPDATE citas SET tienda_id = ?, servicio_id = ?, cita_fecha = ?, cita_hora = ? WHERE cita_id = ?', [tienda_id, servicio_id, cita_fecha, cita_hora, cita_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Cita actualizada exitosamente.' });
-    });
-};
+    static async createAppointment(req, res) {
+        try {
+            const appointment = req.body;
+            const newAppointment = await Appointment.createAppointment(
+                appointment
+            );
+            res.status(201).json(newAppointment);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 
-// Eliminar una cita 
-export const deleteAppointment = (req, res) => {
-    const { cita_id } = req.params;
-    db.query('DELETE FROM citas WHERE cita_id = ?', [cita_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Cita eliminada exitosamente.' });
-    });
-};
+    static async updateAppointment(req, res) {
+        try {
+            const { cita_id } = req.params;
+            const appointment = req.body;
+            const updatedAppointment = await Appointment.updateAppointment(
+                cita_id,
+                appointment
+            );
+            res.json(updatedAppointment);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async deleteAppointment(req, res) {
+        try {
+            const { cita_id } = req.params;
+            const deletedAppointment = await Appointment.deleteAppointment(
+                cita_id
+            );
+            res.json(deletedAppointment);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async changeStatus(req, res) {
+        try {
+            const { cita_id } = req.params;
+            const { cita_estado } = req.body;
+
+            // Validación básica (opcional pero recomendable)
+            const validStates = [
+                "pendiente",
+                "confirmada",
+                "cancelada",
+                "completada",
+            ];
+            if (!validStates.includes(cita_estado)) {
+                return res.status(400).json({ error: "Estado no válido." });
+            }
+
+            const updatedAppointment = await Appointment.changeStateAppointment(
+                cita_id,
+                cita_estado
+            );
+            res.json(updatedAppointment);
+        } catch (error) {
+            console.error("Error al cambiar el estado de la cita:", error);
+            res.status(500).json({
+                error: "Error al cambiar el estado de la cita.",
+            });
+        }
+    }
+}
+
+export default AppointmentController;

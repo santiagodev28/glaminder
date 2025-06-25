@@ -3,7 +3,7 @@ import User from "../models/User.js";
 // Controlador para los usuarios
 
 class UserController {
-    static async getAllUsers(req, res) {
+    static async getAllUsers(req, res) { // Función para obtener todos los usuarios
         try {
             const estado = req.query.usuario_estado; // <- Recoge el query param
             const users = await User.getAllUsers(estado);
@@ -14,7 +14,7 @@ class UserController {
         }
     }
 
-    static async getUserById(req, res) {
+    static async getUserById(req, res) { // Función para obtener un usuario por su ID
         try {
             const { usuario_id } = req.params;
             const user = await User.getUserById(usuario_id);
@@ -25,7 +25,7 @@ class UserController {
         }
     }
 
-    static async updateUser(req, res) {
+    static async updateUser(req, res) { // Función para actualizar un usuario
         try {
             const { usuario_id } = req.params;
             const user = req.body;
@@ -38,7 +38,7 @@ class UserController {
         }
     }
 
-    static async deleteUser(req, res) {
+    static async deleteUser(req, res) { // Función para eliminar un usuario
         try {
             const { usuario_id } = req.params;
             const result = await User.deleteUser(usuario_id);

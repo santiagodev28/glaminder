@@ -46,7 +46,8 @@ CREATE TABLE `empleados` (
   `empleado_id` INT AUTO_INCREMENT PRIMARY KEY,
   `usuario_id` INT,
   `tienda_id` INT,
-  `empleado_especialidad` VARCHAR(100)
+  `empleado_especialidad` VARCHAR(100),
+  `empleado_estado` BOOLEAN DEFAULT 1
 );
 
 -- Datos Empleados
@@ -58,7 +59,8 @@ INSERT INTO `empleados` (`empleado_id`,`usuario_id`,`tienda_id`, `empleado_espec
 -- Tabla propietarios
 CREATE TABLE `propietarios` (
   `propietario_id` INT AUTO_INCREMENT PRIMARY KEY,
-  `usuario_id` INT
+  `usuario_id` INT,
+  `propietario_estado` BOOLEAN DEFAULT 1
 );
 
 -- Datos Propietarios
@@ -73,7 +75,8 @@ CREATE TABLE `negocios` (
   `negocio_telefono` VARCHAR(15),
   `negocio_correo` VARCHAR(150),
   `negocio_descripcion` TEXT,
-  `negocio_fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `negocio_fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `negocio_estado` BOOLEAN DEFAULT 1
 );
 
 -- Datos Negocios
@@ -91,7 +94,8 @@ CREATE TABLE `tiendas` (
   `tienda_correo` VARCHAR(150),
   `tienda_ciudad` VARCHAR(50),
   `tienda_activa` BOOLEAN,
-  `tienda_fecha_apertura` DATE
+  `tienda_fecha_apertura` DATE,
+  `tienda_estado` BOOLEAN DEFAULT 1
 );
 
 -- Datos Tiendas
@@ -106,7 +110,8 @@ CREATE TABLE `servicios` (
   `servicio_descripcion` TEXT,
   `servicio_precio` DECIMAL(10,2),
   `servicio_duracion` INT,  
-  `servicio_categoria` VARCHAR(50)
+  `servicio_categoria` VARCHAR(50),
+  `servicio_estado` BOOLEAN DEFAULT 1
 );
 -- Datos Servicios
 INSERT INTO `servicios` (`servicio_id`,`tienda_id`,`servicio_nombre`,`servicio_descripcion`,`servicio_precio`,`servicio_duracion`,`servicio_categoria`) VALUES

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 // Controlador de autenticacion
 class AuthController {
-    static async userLogin(req, res) {
+    static async userLogin(req, res) { // Función para iniciar sesión
         const { usuario_correo, usuario_contrasena } = req.body;
 
         if (!usuario_correo || !usuario_contrasena) {
@@ -59,7 +59,7 @@ class AuthController {
         }
     }
 
-    static async userRegister(req, res) {
+    static async userRegister(req, res) { // Función para registrar un usuario
         try {
             const {
                 usuario_nombre,
@@ -102,7 +102,8 @@ class AuthController {
         }
     }
 
-    static async logout (req, res) {
+    static async logout (req, res) { // Función para cerrar sesión
+        req.session.destroy();
         res.json({ message: "Sesion cerrada exitosamente." });
     }
 }

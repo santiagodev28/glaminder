@@ -1,29 +1,37 @@
-import db from "../database/connectiondb.js";
+import Owner from "../models/Owner.js";
 
-// Obtener todos los propietarios
+// Controlador para los propietarios
 
-export const getAllOwners = ('/', (req, res) => {
-    db.query('SELECT * FROM propietarios', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-});
+class OwnerController {
+    static async getAllOwners(req, res) { // Función para obtener todos los propietarios
+        try {
+            const owners = await Owner.getAllOwners();
+            res.json(owners);
+        } catch (error) {
+            console.error("Error al obtener propietarios:", error);
+            res.status(500).json({ error: "Error al obtener propietarios" });
+        }
+    }
 
-// Obtener Propietario por id
-export const getOwnerById = (req, res) => {
-    const { propietario_id } = req.params;
-    db.query('SELECT * FROM propietarios WHERE propietario_id = ?', [propietario_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-};
+    static async getOwnerById(req, res) { // Función para obtener un propietario por su ID
+        try {
+            const { propietario_id } = req.params;
+            const owner = await Owner.getOwnerById(propietario_id);
+            res.json(owner);
+        } catch (error) {
+            console.error("Error al obtener el propietario:", error);
+            res.status(500).json({ error: "Error al obtener el propietario" });
+        }
+    }
 
-// Eliminar Propietario 
-export const deleteOwner = (req, res) => {
-    const { propietario_id } = req.params;
-    db.query('DELETE FROM propietarios WHERE propietario_id = ?', [propietario_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Propietario eliminado exitosamente.' });
-    });
-};
-
+    static async deleteOwner(req, res) { // Función para eliminar un propietario
+        try {
+            const { propietario_id } = req.params;
+            const deletedOwner = await Owner.deleteOwner(propietario_id);
+            res.json(deletedOwner);
+        } catch (error) {
+            console.error("Error al eliminar el propietario:", error);
+            res.status(500).json({ error: "Error al eliminar el propietario" });
+        }
+    }
+}

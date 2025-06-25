@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import { authorizeRoles } from "../middlewares/authorizeRoles.js";
-import { getAllEmployees, getEmployeeById, createEmployee, updateEmployee, deleteEmployee } from "../controllers/employeesController.js";
+import EmployeeController from "../controllers/employeeController.js";
 
 
 
 const employeeRoutes = Router();
 
 // Rutas
-employeeRoutes.get('/', getAllEmployees);
-employeeRoutes.get('/:empleado_id', getEmployeeById);
-employeeRoutes.post('/', verifyToken,authorizeRoles(1,2), createEmployee);
-employeeRoutes.put('/:empleado_id', verifyToken, authorizeRoles(1,2,3), updateEmployee);
-employeeRoutes.delete('/:empleado_id', verifyToken, authorizeRoles(1,2), deleteEmployee);
+employeeRoutes.get('/', EmployeeController.getAllEmployees);
+employeeRoutes.get('/:empleado_id', EmployeeController.getEmployeeById);
+employeeRoutes.post('/', verifyToken,authorizeRoles(1,2), EmployeeController.createEmployee);
+employeeRoutes.put('/:empleado_id', verifyToken, authorizeRoles(1,2,3), EmployeeController.updateEmployee);
+employeeRoutes.delete('/:empleado_id', verifyToken, authorizeRoles(1,2), EmployeeController.deleteEmployee);
 
 export default employeeRoutes;
