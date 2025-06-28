@@ -1,77 +1,54 @@
-import db from "../database/connectiondb.js";
+import Stores from "../models/Store.js";   
 
-// Obtener todas las tiendas 
-export const getAllStores = ('/', (req, res) => {
-    db.query('SELECT * FROM tiendas', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-});
-
-// Obtener tienda por id 
-export const getStoreById = (req, res) => {
-    const { tienda_id } = req.params;
-    db.query('SELECT * FROM tiendas WHERE tienda_id = ?', [tienda_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-};
-
-// Obtener tienda por nombre 
-export const getStoreByName = (req, res) => {
-    const { tienda_nombre } = req.params;
-    db.query('SELECT * FROM tiendas WHERE tienda_nombre = ?', [tienda_nombre], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-};
-
-// Crear tienda 
-export const createStore = (req, res) => {
-    const { negocio_id ,tienda_nombre, tienda_direccion, tienda_telefono, tienda_correo, tienda_ciudad, tienda_activa, tienda_fecha_apertura } = req.body;
-    db.query('INSERT INTO tiendas ( negocio_id,tienda_nombre, tienda_direccion, tienda_telefono, tienda_correo, tienda_ciudad, tienda_activa, tienda_fecha_apertura) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [tienda_nombre ,tienda_direccion, tienda_telefono, tienda_correo, tienda_ciudad, 1, tienda_fecha_apertura], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Tienda creada exitosamente.' });
-    });
-};
-
-// Eliminar tienda
-export const deleteStore = (req, res) => {
-    const { tienda_id } = req.params;
-    db.query('DELETE FROM tiendas WHERE tienda_id = ?', [tienda_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Tienda eliminada exitosamente.' });
-    });
-} 
-
-// Actualizar tienda 
-export const updateStore = (req, res) => {
-    const {
-        tienda_id,
-        tienda_nombre,
-        tienda_direccion,
-        tienda_telefono,
-        tienda_correo,
-        tienda_ciudad,
-        tienda_activa,
-        tienda_fecha_apertura,
-    } = req.body;
-
-    db.query(
-        'UPDATE tiendas SET tienda_nombre = ?, tienda_direccion = ?, tienda_telefono = ?, tienda_correo = ?, tienda_ciudad = ?, tienda_activa = ?, tienda_fecha_apertura = ? WHERE tienda_id = ?',
-        [
-            tienda_nombre,
-            tienda_direccion,
-            tienda_telefono,
-            tienda_correo,
-            tienda_ciudad,
-            tienda_activa,
-            tienda_fecha_apertura,
-            tienda_id,
-        ],
-        (err, results) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ message: 'Tienda actualizada exitosamente.' });
+class StoresController {
+    static async getAllStores(req, res) {
+        try {
+            const stores = await Stores.getAllStores();
+            res.status(200).json(stores);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-    );
-};
+    }
+    static async getStoreById(req, res) {
+        try {
+            const { tienda_id } = req.params;
+            const store = await Stores.getStoreById(tienda_id);
+            res.status(200).json(store);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async createStore(req, res) {
+        try {
+            const store = req.body;
+            const newStore = await Stores.createStore(store);
+            res.status(201).json(newStore);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async updateStore(req, res) {
+        try {
+            const { tienda_id } = req.params;
+            const store = req.body;
+            const updatedStore = await Stores.updateStore(tienda_id, store);
+            res.status(200).json(updatedStore);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async deleteStore(req, res) {
+        try {
+            const { tienda_id } = req.params;
+            const deletedStore = await Stores.deleteStore(0,tienda_id);
+            res.status(200).json(deletedStore);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+}
+
+export default StoresController;

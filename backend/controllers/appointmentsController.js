@@ -1,4 +1,3 @@
-import { escape } from "mysql";
 import Appointment from "../models/Appointment.js";
 
 class AppointmentController {

@@ -1,63 +1,60 @@
-import db from "../database/connectiondb.js";
+import Schedule  from "../models/Schedule.js";
 
-
-// Obtener todos los horarios
-export const getAllSchedules = ('/', (req, res) => {
-    db.query('SELECT * FROM horarios', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-});
-
-// Obtener horario por id 
-export const getScheduleById = (req, res) => {
-    const { horario_id } = req.params;
-    db.query('SELECT * FROM horarios WHERE horario_id = ?', [horario_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-};
-
-// Crear un Horario nuevo 
-export const createSchedule = (req, res) => {
-    const { horario_dia, horario_hora_inicio, horario_hora_fin } = req.body;
-    db.query('INSERT INTO horarios (horario_dia, horario_hora_inicio, horario_hora_fin) VALUES (?, ?, ?)', [horario_dia, horario_hora_inicio, horario_hora_fin], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Horario creado exitosamente.' });
-    });
-};
-
-
-// Actualizar un horario 
-export const updateSchedule = (req, res) => {
-    const {
-        empleado_id,
-        horario_dia,
-        horario_hora_inicio,
-        horario_hora_fin,
-    } = req.body;
-
-    db.query(
-        'UPDATE horarios SET empleado_id = ?, horario_dia = ?, horario_hora_inicio = ?, horario_hora_fin = ? WHERE horario_id = ?',
-        [
-        empleado_id,
-        horario_dia,
-        horario_hora_inicio,
-        horario_hora_fin,
-        ],
-        (err, results) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ message: 'Tienda actualizada exitosamente.' });
+class SchedulesController {
+    static async getAllSchedules(req, res) {
+        try {
+            const schedules = await Schedule.getAllSchedules();
+            res.status(200).json(schedules);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error al obtener los horarios" });
         }
-    );
-};
+    }
 
+    static async getScheduleById(req, res) {
+        try {
+            const { schedule_id } = req.params;
+            const schedule = await Schedule.getScheduleById(schedule_id);
+            res.status(200).json(schedule);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error al obtener el horario" });
+        }
+    }
 
-// Eliminar un horario 
-export const deleteSchedule = (req, res) => {
-    const { horario_id } = req.params;
-    db.query('DELETE FROM horarios WHERE horario_id = ?', [horario_id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Horario eliminado exitosamente.' });
-    });
-};
+    static async createSchedule(req, res) {
+        try {
+            const schedule = req.body;
+            const newSchedule = await Schedule.createSchedule(schedule);
+            res.status(201).json(newSchedule);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error al crear el horario" });
+        }
+    }
+
+    static async updateSchedule(req, res) {
+        try {
+            const { schedule_id } = req.params;
+            const schedule = req.body;
+            const updatedSchedule = await Schedule.updateSchedule(schedule_id, schedule);
+            res.status(200).json(updatedSchedule);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error al actualizar el horario" });
+        }
+    }
+
+    static async deleteSchedule(req, res) {
+        try {
+            const { schedule_id } = req.params;
+            const deletedSchedule = await Schedule.deleteSchedule(schedule_id);
+            res.status(200).json(deletedSchedule);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error al eliminar el horario" });
+        }
+    }
+}
+
+export default SchedulesController;
