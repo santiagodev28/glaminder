@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../../api/api";
-import EditUserModal from "../../components/modals/EditUserModal";
+import api from "../../../api/api";
+import EditUserModal from "../../../components/modals/EditUserModal";
 
 const UserAdmin = () => {
     const [users, setUsers] = useState([]);

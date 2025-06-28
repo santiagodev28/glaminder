@@ -6,7 +6,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const rol = Number(localStorage.getItem('rol'));
+    const rol = Number(localStorage.getItem('rol_id'));
 
     if (!token || rol !== 1) {
       navigate('/'); // Redirigir al login si no es admin
