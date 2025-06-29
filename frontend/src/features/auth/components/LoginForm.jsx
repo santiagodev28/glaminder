@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../authService";
 import { Link } from "react-router-dom";
-import SuccessMessage from "./SuccessMessage";
+import SuccessMessage from "./SuccessMessage"; 
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -90,7 +90,7 @@ const LoginForm = () => {
                 <p className="mt-4">
                     ¿No tienes una cuenta?{" "}
                     <Link
-                        to="/registro"
+                        to="/registrar"
                         className="text-blue-500 hover:underline"
                     >
                         Regístrate

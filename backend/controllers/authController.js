@@ -1,7 +1,7 @@
 import Auth from "../models/Auth.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+ 
 // Controlador de autenticacion
 class AuthController {
     static async userLogin(req, res) { // Función para iniciar sesión
@@ -59,48 +59,66 @@ class AuthController {
         }
     }
 
-    static async userRegister(req, res) { // Función para registrar un usuario
-        try {
-            const {
-                usuario_nombre,
-                usuario_apellido,
-                usuario_correo,
-                usuario_contrasena,
-                usuario_telefono,
-                rol_id,
-            } = req.body;
+    static async userRegister(req, res) {
+    try {
+        const {
+            usuario_nombre,
+            usuario_apellido,
+            usuario_correo,
+            usuario_contrasena,
+            usuario_telefono,
+            rol_id,
+            tienda_id,
+            empleado_especialidad,
+        } = req.body;
 
-            if (
-                !usuario_nombre ||
-                !usuario_apellido ||
-                !usuario_correo ||
-                !usuario_contrasena ||
-                !usuario_telefono ||
-                !rol_id
-            ) {
-                return res
-                    .status(400)
-                    .json({ message: "Por favor completa todos los campos." });
-            }
-
-            const extingUser = await Auth.findUserByEmail(usuario_correo);
-
-            if (extingUser) {
-                return res
-                    .status(400)
-                    .json({ message: "El correo ya está registrado." });
-            }
-            await Auth.createUser(req.body);
-            return res
-                .status(200)
-                .json({ message: "Usuario registrado exitosamente." });
-        } catch {
-            console.error("Error al registrar el usuario:", error);
-            return res
-                .status(500)
-                .json({ message: "Error al registrar el usuario." });
+        // Validar campos obligatorios
+        if (
+            !usuario_nombre ||
+            !usuario_apellido ||
+            !usuario_correo ||
+            !usuario_contrasena ||
+            !usuario_telefono ||
+            !rol_id
+        ) {
+            return res.status(400).json({
+                message: "Por favor completa todos los campos.",
+            });
         }
+
+        // Verificar si el correo ya existe
+        const existingUser = await Auth.findUserByEmail(usuario_correo);
+        if (existingUser) {
+            return res.status(400).json({
+                message: "El correo ya está registrado.",
+            });
+        }
+
+        // Crear el usuario (solo si no existe)
+        const nuevoUsuario = await Auth.createUser({
+            usuario_nombre,
+            usuario_apellido,
+            usuario_correo,
+            usuario_contrasena,
+            usuario_telefono,
+            rol_id,
+            tienda_id,
+            empleado_especialidad,
+        });
+
+        return res.status(200).json({
+            message: "Usuario registrado exitosamente.",
+            data: nuevoUsuario,
+        });
+
+    } catch (error) {
+        console.error("Error al registrar el usuario:", error);
+        return res.status(500).json({
+            message: "Error al registrar el usuario.",
+        });
     }
+}
+
 
     static async logout (req, res) { // Función para cerrar sesión
         req.session.destroy();

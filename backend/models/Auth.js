@@ -1,6 +1,8 @@
 import db from "../database/connectiondb.js";
 import bycript from "bcrypt";
+
 class Auth {
+    // Buscar usuario por correo electrónico
     static async findUserByEmail(usuario_correo) {
         return new Promise((resolve, reject) => {
             db.query(
@@ -14,6 +16,7 @@ class Auth {
         });
     }
 
+    // Crear nuevo usuario
     static async createUser(user) {
         const {
             usuario_nombre,
@@ -22,7 +25,10 @@ class Auth {
             usuario_contrasena,
             usuario_telefono,
             rol_id,
+            tienda_id,
+            empleado_especialidad,
         } = user;
+
         const hashedPassword = bycript.hashSync(usuario_contrasena, 10);
 
         return new Promise((resolve, reject) => {
@@ -41,43 +47,36 @@ class Auth {
 
                     const userId = results.insertId;
 
+                    // Si el rol es 3 (empleado)
                     if (rol_id == 3) {
                         db.query(
                             "INSERT INTO empleados (usuario_id, tienda_id, empleado_especialidad) VALUES (?, ?, ?)",
-                            [
-                                userId,
-                                user.tienda_id,
-                                user.empleado_especialidad,
-                            ],
+                            [userId, tienda_id, empleado_especialidad],
                             (err, results) => {
                                 if (err) return reject(err);
+                                return resolve({ userId, role: "empleado" });
                             }
                         );
-                    }
-                    if (rol_id == 2) {
+
+                    // Si el rol es 2 (propietario)
+                    } else if (rol_id == 2) {
                         db.query(
                             "INSERT INTO propietarios (usuario_id) VALUES (?)",
                             [userId],
                             (err, results) => {
                                 if (err) return reject(err);
-                                return resolve(results);
+                                return resolve({ userId, role: "propietario" });
                             }
                         );
+
+                    // Si el rol es 4 (cliente) u otro válido sin tabla adicional
                     } else {
-                        db.query(
-                            "INSERT INTO clientes (usuario_id) VALUES (?)",
-                            [userId],
-                            (err, results) => {
-                                if (err) return reject(err);
-                                return resolve(results);
-                            }
-                        );
+                        return resolve({ userId, role: "cliente" });
                     }
                 }
             );
         });
     }
-
-    
 }
+
 export default Auth;
