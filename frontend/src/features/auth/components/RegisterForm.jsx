@@ -168,7 +168,7 @@ const RegisterForm = () => {
                         Registrarse
                     </button>
                     <Link
-                        to="/login"
+                        to="/"
                         className="text-center w-full bg-slate-600 py-2 px-4 rounded text-white hover:bg-slate-700"
                     >
                         Volver

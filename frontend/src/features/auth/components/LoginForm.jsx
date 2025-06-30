@@ -54,7 +54,7 @@ const LoginForm = () => {
             <h2 className="text-2xl font-bold mb-4">Iniciar sesión</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                    <label htmlFor="email">Correo electrónico:</label>
+                    <label htmlFor="email" className="font-bold">Correo electrónico:</label>
                     <input
                         type="email"
                         id="email"
@@ -62,19 +62,19 @@ const LoginForm = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         autoFocus
-                        className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="bg-transparent border border-yellow-600 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
 
-                <div className="mb-4">
-                    <label htmlFor="password">Contraseña:</label>
+                <div className="mb-6" >
+                    <label htmlFor="password" className="font-bold">Contraseña:</label>
                     <input
                         type="password"
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="bg-transparent border border-yellow-600 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
 
@@ -82,18 +82,18 @@ const LoginForm = () => {
 
                 <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="border border-yellow-500 hover:bg-yellow-500 hover:border-none hover:text-white text-yellow-500 font-bold py-2 px-4 rounded w-full mb-4 cursor-pointer transition-all duration-500 ease-in-out hover:shadow-lg"
                 >
                     Ingresar
                 </button>
 
-                <p className="mt-4">
+                <p className="mt-4 text-center">
                     ¿No tienes una cuenta?{" "}
                     <Link
                         to="/registrar"
-                        className="text-blue-500 hover:underline"
+                        className="text-yellow-600 transition duration-300 ease-in-out hover:text-yellow-400"
                     >
-                        Regístrate
+                        Regístrate aquí
                     </Link>
                 </p>
             </form>
