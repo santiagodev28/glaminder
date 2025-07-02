@@ -11,7 +11,8 @@ businessRoutes.post('/', verifyToken, authorizeRoles(1,2), BusinessController.cr
 businessRoutes.get('/', BusinessController.getAllBusiness);
 businessRoutes.get('/:negocio_id', verifyToken, authorizeRoles(1,2), BusinessController.getBusinessById);
 businessRoutes.put('/:negocio_id', verifyToken, authorizeRoles(1,2), BusinessController.updateBusiness);
-businessRoutes.delete('/:negocio_id', verifyToken, authorizeRoles(1,2), BusinessController.deleteBusiness);
+businessRoutes.put('/desactivar/:negocio_id', verifyToken, authorizeRoles(1,2), BusinessController.deleteBusiness);
+businessRoutes.put('/activar/:negocio_id', verifyToken, authorizeRoles(1,2), BusinessController.reactivateBusiness);
 
 
 export default businessRoutes;

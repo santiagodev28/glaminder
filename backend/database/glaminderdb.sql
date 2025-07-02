@@ -88,7 +88,7 @@ INSERT INTO `negocios` (`negocio_id`,`propietario_id`,`negocio_nombre`,`negocio_
 CREATE TABLE `tiendas` (
   `tienda_id` INT AUTO_INCREMENT PRIMARY KEY,
   `negocio_id` INT,
-  `tienda_nombre` VARCHAR(100),
+  `tienda_nombre` VARCHAR(100), 
   `tienda_direccion` VARCHAR(200),
   `tienda_telefono` VARCHAR(10),
   `tienda_correo` VARCHAR(150),

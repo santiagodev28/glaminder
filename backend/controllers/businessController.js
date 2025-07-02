@@ -58,6 +58,17 @@ class BusinessController {
             res.status(500).json({ error: "Error al eliminar el negocio." });
         }
     }
+
+    static async reactivateBusiness(req, res) {
+        try {
+            const { negocio_id } = req.params;
+            const reactivatedBusiness = await Business.reactivateBusiness(negocio_id);
+            res.json(reactivatedBusiness);
+        } catch (error) {
+            console.error("Error al reactivar el negocio:", error);
+            res.status(500).json({ error: "Error al reactivar el negocio." });
+        }
+    }
 }
 
 export default BusinessController;

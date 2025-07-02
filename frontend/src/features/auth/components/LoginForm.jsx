@@ -62,7 +62,7 @@ const LoginForm = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         autoFocus
-                        className="bg-transparent border border-yellow-600 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                        className="bg-yellow-100 border border-yellow-600 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
 
@@ -74,7 +74,7 @@ const LoginForm = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="bg-transparent border border-yellow-600 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                        className="bg-yellow-100 border border-yellow-600 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
 
@@ -82,7 +82,7 @@ const LoginForm = () => {
 
                 <button
                     type="submit"
-                    className="border border-yellow-500 hover:bg-yellow-500 hover:border-none hover:text-white text-yellow-500 font-bold py-2 px-4 rounded w-full mb-4 cursor-pointer transition-all duration-500 ease-in-out hover:shadow-lg"
+                    className="border border-yellow-500 hover:bg-yellow-500 hover:border-yellow-500 hover:text-white text-yellow-500 font-bold py-2 px-4 rounded w-full mb-4 cursor-pointer transition-all duration-500 ease-in-out hover:shadow-lg"
                 >
                     Ingresar
                 </button>
