@@ -9,10 +9,10 @@ class StoresController {
             res.status(500).json({ error: error.message });
         }
     }
-    static async getStoreById(req, res) {
+    static async getStoreByBusiness(req, res) {
         try {
-            const { tienda_id } = req.params;
-            const store = await Stores.getStoreById(tienda_id);
+            const { negocio_id } = req.params;
+            const store = await Stores.getStoreByBusiness(negocio_id);
             res.status(200).json(store);
         } catch (error) {
             res.status(500).json({ error: error.message });

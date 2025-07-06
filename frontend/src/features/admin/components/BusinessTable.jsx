@@ -4,9 +4,11 @@ import {
   deleteBusiness,
   reactivateBusiness,
 } from "../adminService.js";
+import { Link } from "react-router-dom";
 
 const BusinessTable = () => {
   const [businesses, setBusinesses] = useState([]);
+  const [showDeletedBusinesses, setShowDeletedBusinesses] = useState(false);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleString("es-CO");
@@ -24,8 +26,9 @@ const BusinessTable = () => {
   useEffect(() => {
     loadBusinesses();
   }, []);
+  
 
-  const handleDelete = async (negocio_id) => {
+  const handleBusinessDelete = async (negocio_id) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de querer eliminar este negocio?"
     );
@@ -77,44 +80,69 @@ const BusinessTable = () => {
           </tr>
         </thead>
         <tbody>
-          {businesses.map((b) => (
-            <tr key={b.negocio_id}>
-              <td className="p-2 border">{b.negocio_id}</td>
-              <td className="p-2 border">{b.negocio_nombre}</td>
-              <td className="p-2 border">{b.negocio_correo}</td>
-              <td className="p-2 border">
-                {formatDate(b.negocio_fecha_registro)}
-              </td>
-              <td className="p-2 border">
-                <button
-                  className="text-blue-600 hover:underline mr-2"
-                  onClick={() => onViewStores(b.id)}
-                >
-                  Ver Tiendas
-                </button>
-                <button
-                  className="text-green-600 hover:underline mr-2"
-                  onClick={() => onViewStats(b.id)}
-                >
-                  Ver Estadísticas
-                </button>
-                <button
-                  className="text-red-600 hover:underline mr-2"
-                  onClick={() => handleDelete(b.negocio_id)}
-                >
-                  Eliminar
-                </button>
-                <button
-                  className="text-green-600 hover:underline"
-                  onClick={() => handleReactivate(b.negocio_id)}
-                >
-                  Reactivar
-                </button>
-              </td>
-            </tr>
-          ))}
+          {businesses
+            .filter((b) =>
+              showDeletedBusinesses
+                ? b.negocio_estado === 0
+                : b.negocio_estado === 1
+            )
+            .map((b) => (
+              <tr key={b.negocio_id}>
+                <td className="p-2 border">{b.negocio_id}</td>
+                <td className="p-2 border">{b.negocio_nombre}</td>
+                <td className="p-2 border">{b.negocio_correo}</td>
+                <td className="p-2 border">
+                  {formatDate(b.negocio_fecha_registro)}
+                </td>
+                <td className="p-2 border">
+                  <Link to={`/admin/negocios/${b.negocio_id}/tiendas`}>
+                    <button className="text-blue-600 hover:underline mr-2">
+                      Ver Tiendas
+                    </button>
+                  </Link>
+                  <button
+                    className="text-green-600 hover:underline mr-2"
+                    onClick={() => onViewStats(b.id)}
+                  >
+                    Ver Estadísticas
+                  </button>
+
+                  {!showDeletedBusinesses ? (
+                    <button
+                      className="text-red-600 hover:underline"
+                      onClick={() => handleBusinessDelete(b.negocio_id)}
+                    >
+                      Eliminar
+                    </button>
+                  ) : (
+                    <button
+                      className="text-green-600 hover:underline"
+                      onClick={() => handleReactivate(b.negocio_id)}
+                    >
+                      Reactivar
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
+      <div className="flex flex-col gap-2 py-4">
+        <button
+          className="text-center w-full bg-slate-600 py-2 px-4 rounded text-white hover:bg-slate-700"
+          onClick={() => setShowDeletedBusinesses(!showDeletedBusinesses)}
+        >
+          {showDeletedBusinesses
+            ? "Mostrar Negocios Activos"
+            : "Mostrar Negocios Eliminados"}
+        </button>
+        <Link
+          to="../admin"
+          className="text-center w-full bg-slate-600 py-2 px-4 rounded text-white hover:bg-slate-700"
+        >
+          Volver
+        </Link>
+      </div>
     </div>
   );
 };

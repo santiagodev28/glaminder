@@ -23,6 +23,15 @@ class Business {
     });
   }
 
+  static async getStoresByBusiness(negocio_id) {
+    return new Promise((resolve, reject) => {
+      db.query("SELECT * FROM tiendas WHERE negocio_id = ?", [negocio_id], (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      });
+    });
+  }
+
   static async createBusiness(
     negocio_nombre,
     negocio_direccion,

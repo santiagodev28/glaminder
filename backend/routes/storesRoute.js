@@ -8,7 +8,7 @@ const storeRoutes = Router();
 
 // Rutas
 storeRoutes.get('/', StoresController.getAllStores);
-storeRoutes.get('/:tienda_id', StoresController.getStoreById);
+storeRoutes.get('/:negocio_id', StoresController.getStoreByBusiness);
 storeRoutes.post('/', verifyToken, authorizeRoles(1,2), StoresController.createStore);
 storeRoutes.put('/:tienda_id',  verifyToken, authorizeRoles(1,2), StoresController.updateStore);
 storeRoutes.delete('/:tienda_id', verifyToken, authorizeRoles(1,2), StoresController.deleteStore);

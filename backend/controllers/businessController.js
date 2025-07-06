@@ -22,6 +22,17 @@ class BusinessController {
         }
     }
 
+    static async getStoresByBusiness(req, res) {
+        try {
+            const { negocio_id } = req.params;
+            const stores = await Business.getStoresByBusiness(negocio_id);
+            res.json(stores);
+        } catch (error) {
+            console.error("Error al obtener las tiendas:", error);
+            res.status(500).json({ error: "Error al obtener las tiendas." });
+        }
+    }
+
     static async createBusiness(req, res) {
         try {
             const business = req.body;

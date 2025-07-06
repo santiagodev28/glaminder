@@ -11,6 +11,25 @@ export const fetchBusinesses = async () => {
     return res.data;
 }
 
+export const fetchBusinessById = async (negocio_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/negocios/${negocio_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
+
+export const fetchStoresByBusiness = async (negocio_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/negocios/${negocio_id}/tiendas`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
 export const deleteBusiness = async (negocio_id) => {
     try {
         const token = localStorage.getItem("token");
@@ -43,4 +62,18 @@ export const reactivateBusiness = async (negocio_id) => {
         },
     });
     return res;
+
+}
+
+export const rolToString = (rol) => {
+    switch (rol) {
+        case 1:
+            return "Administrador";
+        case 2:
+            return "Propietario";
+        case 3:
+            return "Empleado";
+        case 4:
+            return "Cliente";
+    }
 }

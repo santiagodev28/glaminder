@@ -4,6 +4,7 @@ import Register from "../features/auth/pages/Register";
 import AdminDashboard from "../features/admin/pages/AdminDashboard";
 import UserAdmin from "../features/admin/pages/UserAdmin";
 import BussinesAdmin from "../features/admin/pages/BussinesAdmin";
+import StoresByBusinessTable from "../features/admin/components/StoresByBusiness";
 
 
 const AppRoutes = () => {
@@ -15,6 +16,7 @@ const AppRoutes = () => {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/usuarios" element={<UserAdmin />} />
             <Route path="/admin/negocios" element={<BussinesAdmin />} />
+            <Route path="/admin/negocios/:negocio_id/tiendas" element={<StoresByBusinessTable />} />
         </Routes>
     );
 };

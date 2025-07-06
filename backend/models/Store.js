@@ -10,11 +10,11 @@ class Stores {
         });
     }
 
-    static async getStoreById(tienda_id) {
+    static async getStoreByBusiness(negocio_id) {
         return new Promise((resolve, reject) => {
             db.query(
-                "SELECT * FROM tiendas WHERE tienda_id = ?",
-                [tienda_id],
+                "SELECT * FROM tiendas WHERE negocio_id = ?",
+                [negocio_id],
                 (err, results) => {
                     if (err) return reject(err);
                     resolve(results.length > 0 ? results[0] : null);
