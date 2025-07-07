@@ -1,9 +1,18 @@
 import api from "../../api/api";
 
-
 export const fetchBusinesses = async () => {
     const token = localStorage.getItem("token");
     const res = await api.get("/negocios", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
+
+export const fetchEmployeesByStore = async (tienda_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/tiendas/${tienda_id}/empleados`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

@@ -5,6 +5,7 @@ import AdminDashboard from "../features/admin/pages/AdminDashboard";
 import UserAdmin from "../features/admin/pages/UserAdmin";
 import BussinesAdmin from "../features/admin/pages/BussinesAdmin";
 import StoresByBusinessTable from "../features/admin/components/StoresByBusiness";
+import EmployeeList from "../features/admin/components/EmployeeList";
 
 
 const AppRoutes = () => {
@@ -17,6 +18,7 @@ const AppRoutes = () => {
             <Route path="/admin/usuarios" element={<UserAdmin />} />
             <Route path="/admin/negocios" element={<BussinesAdmin />} />
             <Route path="/admin/negocios/:negocio_id/tiendas" element={<StoresByBusinessTable />} />
+            <Route path="/admin/negocios/:negocio_id/tiendas/:tienda_id/empleados" element={<EmployeeList />} />
         </Routes>
     );
 };

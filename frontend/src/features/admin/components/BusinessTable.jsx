@@ -26,7 +26,6 @@ const BusinessTable = () => {
   useEffect(() => {
     loadBusinesses();
   }, []);
-  
 
   const handleBusinessDelete = async (negocio_id) => {
     const confirmDelete = window.confirm(

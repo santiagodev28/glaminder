@@ -45,9 +45,12 @@ const StoresByBusinessTable = () => {
                             <td className="p-2 border">{s.tienda_ciudad}</td>
                             <td className="p-2 border">{s.tienda_activa}</td>
                             <td className="p-2 border">
+
+                               <Link to={`/admin/negocios/${negocio_id}/tiendas/${s.tienda_id}/empleados`}>
                                 <button className="text-blue-600 hover:underline mr-2">
                                     Ver Empleados
-                                </button>
+                                </button> 
+                               </Link>
                             </td>
                         </tr>
                     ))}

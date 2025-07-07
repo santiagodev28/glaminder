@@ -8,6 +8,7 @@ const storeRoutes = Router();
 
 // Rutas
 storeRoutes.get('/', StoresController.getAllStores);
+storeRoutes.get('/:tienda_id/empleados', StoresController.getEmployeesByStore);
 storeRoutes.get('/:negocio_id', StoresController.getStoreByBusiness);
 storeRoutes.post('/', verifyToken, authorizeRoles(1,2), StoresController.createStore);
 storeRoutes.put('/:tienda_id',  verifyToken, authorizeRoles(1,2), StoresController.updateStore);

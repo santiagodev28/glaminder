@@ -19,6 +19,16 @@ class StoresController {
         }
     }
 
+    static async getEmployeesByStore(req, res) {
+        try {
+            const { tienda_id } = req.params;
+            const employees = await Stores.getEmployeesByStore(tienda_id);
+            res.status(200).json(employees);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+    
     static async createStore(req, res) {
         try {
             const store = req.body;
