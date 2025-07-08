@@ -1,24 +1,30 @@
 import Report from "../models/Report.js";
 
 class ReportsController{
-    static async getAllAppointmentsByState(req, res) {
-        const cita_estado = req.params.cita_estado;
-        const citas = await Report.getAllAppointmentsByState(cita_estado);
-        res.json(citas);
+    static async getTopEmployees(req, res) {
+        const { negocio_id } = req.params;
+        const topEmployees = await Report.getTopEmployeesByAppointments(negocio_id);
+        res.json(topEmployees);
     }
-    static async getAppointmentsByDay(req, res) {
-        const cita_fecha = req.params.cita_fecha;
-        const citas = await Report.getAppointmentsByDay(cita_fecha);
-        res.json(citas);
+
+    static async getTopServices(req, res) {
+        const { negocio_id } = req.params;
+        const topServices = await Report.getTopServicesByAppointments(negocio_id);
+        res.json(topServices);
     }
-    static async getMostScheduledServices(req, res) {
-        const citas = await Report.getMostScheduledServices();
-        res.json(citas);
+
+    static async getTopStores(req, res) {
+        const { negocio_id } = req.params;
+        const topStores = await Report.getTopStores(negocio_id);
+        res.json(topStores);
     }
-    static async getMostScheduledEmployees(req, res) {
-        const citas = await Report.getMostScheduledEmployees();
-        res.json(citas);
+
+    static async getAppointmentsTrends(req, res) {
+        const { negocio_id } = req.params;
+        const appointmentsTrends = await Report.getAppointmentsTrends(negocio_id);
+        res.json(appointmentsTrends);
     }
+
 }
 
 export default ReportsController   

@@ -1,5 +1,45 @@
 import api from "../../api/api";
 
+export const fetchTopEmployees = async (negocio_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/reportes/top-empleados/${negocio_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
+
+export const fetchTopServices = async (negocio_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/reportes/top-servicios/${negocio_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
+
+export const fetchTopStores = async (negocio_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/reportes/top-tiendas/${negocio_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
+
+export const fetchAppointmentsTrends = async (negocio_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/reportes/tendencias-citas/${negocio_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
+
 export const fetchBusinesses = async () => {
     const token = localStorage.getItem("token");
     const res = await api.get("/negocios", {

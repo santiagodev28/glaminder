@@ -6,9 +6,9 @@ import ReportsController from "../controllers/reportsController.js";
 const reportRoutes = Router();
 
 // Rutas
-reportRoutes.get('/citasPorEstado/:cita_estado', verifyToken, authorizeRoles(1,2), ReportsController.getAllAppointmentsByState);
-reportRoutes.get('/citasPorDia/:cita_fecha', verifyToken, authorizeRoles(1,2), ReportsController.getAppointmentsByDay);
-reportRoutes.get('/serviciosMasAgendados', verifyToken, authorizeRoles(1,2), ReportsController.getMostScheduledServices);
-reportRoutes.get('/empleadosMasAgendados',  verifyToken, authorizeRoles(1,2), ReportsController.getMostScheduledEmployees);
+reportRoutes.get('/top-empleados/:negocio_id', verifyToken, authorizeRoles(1,2), ReportsController.getTopEmployees);
+reportRoutes.get('/top-servicios/:negocio_id', verifyToken, authorizeRoles(1,2), ReportsController.getTopServices);
+reportRoutes.get('/top-tiendas/:negocio_id', verifyToken, authorizeRoles(1,2), ReportsController.getTopStores);
+reportRoutes.get('/tendencias-citas/:negocio_id', verifyToken, authorizeRoles(1,2), ReportsController.getAppointmentsTrends);
 
 export default reportRoutes;

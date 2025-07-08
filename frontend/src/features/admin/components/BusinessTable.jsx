@@ -99,12 +99,12 @@ const BusinessTable = () => {
                       Ver Tiendas
                     </button>
                   </Link>
-                  <button
-                    className="text-green-600 hover:underline mr-2"
-                    onClick={() => onViewStats(b.id)}
-                  >
-                    Ver Estadísticas
-                  </button>
+                  
+                  <Link to={`/admin/negocios/${b.negocio_id}/estadisticas`}>
+                    <button className="text-green-600 hover:underline mr-2">
+                      Ver Estadísticas
+                    </button>
+                  </Link>
 
                   {!showDeletedBusinesses ? (
                     <button
