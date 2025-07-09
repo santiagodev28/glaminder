@@ -65,7 +65,7 @@ const EmployeeList = () => {
                 </tbody>
             </table>
             <Link to={`/admin/negocios/${negocio_id}/tiendas`}>
-                <button className="bg-blue-500 text-white p-2 rounded-md">Volver</button>
+                <button className="bg-blue-500 text-white p-2 mt-4 rounded-md">Volver</button>
             </Link>
         </div>
     );
