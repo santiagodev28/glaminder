@@ -25,6 +25,17 @@ class ReportsController{
         res.json(appointmentsTrends);
     }
 
+    static async getUserPerMonth(req, res) {
+        const { usuario_fecha_registro } = req.params;
+        const userPerMonth = await Report.getUserPerMonth(usuario_fecha_registro);
+        res.json(userPerMonth);
+    }
+
+    static async getStatsOverview(req, res) {
+        const statsOverview = await Report.getStatsOverview();
+        res.json(statsOverview);
+    }
+
 }
 
 export default ReportsController   

@@ -114,6 +114,28 @@ class Reports {
       );
     });
   }
+
+  static async getUserPerMonth(usuario_fecha_registro) {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT DATE_FORMAT(usuario_fecha_registro, '%Y-%m') AS mes, COUNT(*) AS total FROM usuarios WHERE usuario_fecha_registro >= ? GROUP BY mes ORDER BY mes DESC LIMIT 6;`,
+        [usuario_fecha_registro],
+        (err, results) => {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static async getStatsOverview() {
+    return new Promise((resolve, reject) => {
+      db.query("SELECT (SELECT COUNT(*) FROM usuarios) AS total_usuarios, (SELECT COUNT(*) FROM negocios) AS total_negocios, (SELECT COUNT(*) FROM empleados) AS total_empleados, (SELECT COUNT(*) FROM usuarios WHERE rol_id = 4) AS total_clientes;", (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      });
+    });
+  }
 }
 
 export default Reports;

@@ -114,6 +114,25 @@ export const reactivateBusiness = async (negocio_id) => {
 
 }
 
+export const fetchUserPerMonth = async (usuario_fecha_registro) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/reportes/usuarios-mes/${usuario_fecha_registro}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}   
+
+export const fetchStatsOverview = async () => {
+    const token = localStorage.getItem("token");
+    const res = await api.get("/reportes/estadisticas-resumen", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
+
 export const rolToString = (rol) => {
     switch (rol) {
         case 1:
