@@ -19,6 +19,12 @@ class ReportsController{
         res.json(topStores);
     }
 
+    static async getTopBusiness(req, res) {
+        const { negocio_id } = req.params;
+        const topBusiness = await Report.getTopBusiness(negocio_id);
+        res.json(topBusiness);
+    }
+
     static async getAppointmentsTrends(req, res) {
         const { negocio_id } = req.params;
         const appointmentsTrends = await Report.getAppointmentsTrends(negocio_id);

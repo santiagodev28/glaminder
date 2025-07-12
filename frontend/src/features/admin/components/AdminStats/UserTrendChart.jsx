@@ -13,8 +13,9 @@ const UserTrendChart = () => {
                 const response = await fetchUserPerMonth();
                 const formattedData = response.data.map((item) => ({
                     mes: new Date(item.mes).toLocaleString('es-CO', { month: 'short', year: 'numeric' }),
-                    usuarios: item.total_usuarios,
+                    usuarios: item.total,
                 }));
+                console.log(formattedData);
                 setData(formattedData)
             } catch (error) {
                 setError(error);
@@ -28,7 +29,8 @@ const UserTrendChart = () => {
     if (loading) return <div>Cargando datos...</div>;
     if (error) return <div>Error al cargar los datos: {error.message}</div>;
 
-    <div className="bg-white shadow-md rounded-2xl p-4 mt-6">
+    return (
+        <div className="bg-white shadow-md rounded-2xl p-4 mt-6">
             <h2 className="text-lg font-semibold mb-4">Usuarios registrados por mes</h2>
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={data}>
@@ -40,6 +42,7 @@ const UserTrendChart = () => {
                 </LineChart>
             </ResponsiveContainer>
         </div>
+    )
 }
 
 export default UserTrendChart;

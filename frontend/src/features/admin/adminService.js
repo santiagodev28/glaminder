@@ -30,6 +30,16 @@ export const fetchTopStores = async (negocio_id) => {
     return res.data;
 }
 
+export const fetchTopBusiness = async (negocio_id) => {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`/reportes/top-negocios/${negocio_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.data;
+}
+
 export const fetchAppointmentsTrends = async (negocio_id) => {
     const token = localStorage.getItem("token");
     const res = await api.get(`/reportes/tendencias-citas/${negocio_id}`, {
@@ -121,6 +131,7 @@ export const fetchUserPerMonth = async (usuario_fecha_registro) => {
             Authorization: `Bearer ${token}`,
         },
     });
+    return res;
 }   
 
 export const fetchStatsOverview = async () => {

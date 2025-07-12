@@ -66,7 +66,7 @@ class Reports {
   static async getTopEmployeesByAppointments(negocio_id) {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT e.empleado_id, u.usuario_nombre AS nombre, u.usuario_apellido AS apellido, COUNT(*) AS total_citas FROM citas c JOIN empleados e ON c.empleado_id = e.empleado_id JOIN usuarios u ON e.usuario_id = u.usuario_id JOIN tiendas t ON e.tienda_id = t.tienda_id WHERE t.negocio_id = ? GROUP BY e.empleado_id ORDER BY total_citas DESC LIMIT 5`,
+        `SELECT e.empleado_id, u.usuario_nombre AS nombre, u.usuario_apellido AS apellido, COUNT(*) AS total_citas FROM citas c JOIN empleados e ON c.empleado_id = e.empleado_id JOIN usuarios u ON e.usuario_id = u.usuario_id JOIN tiendas t ON e.tienda_id = t.tienda_id WHERE t.negocio_id = 1 GROUP BY e.empleado_id ORDER BY total_citas DESC LIMIT 5;`,
         [negocio_id],
         (err, results) => {
           if (err) return reject(err);
@@ -93,6 +93,19 @@ class Reports {
     return new Promise((resolve, reject) => {
       db.query(
         `SELECT t.tienda_id, t.tienda_nombre, COUNT(*) AS total_visitas FROM citas c JOIN tiendas t ON c.tienda_id = t.tienda_id WHERE t.negocio_id = ? GROUP BY t.tienda_id ORDER BY total_visitas DESC LIMIT 5;`,
+        [negocio_id],
+        (err, results) => {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static async getTopBusiness(negocio_id) {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT n.negocio_id, n.negocio_nombre, n.negocio_descripcion, ROUND(AVG(c.calificacion_puntuacion),1) AS promedio_calificacion, COUNT(*) AS total_calificaciones FROM negocios n JOIN calificaciones_negocios nc ON n.negocio_id = nc.negocio_id JOIN calificaciones c ON nc.calificacion_id = c.calificacion_id WHERE n.negocio_estado = 1 GROUP BY n.negocio_id ORDER BY promedio_calificacion DESC LIMIT 5;`,
         [negocio_id],
         (err, results) => {
           if (err) return reject(err);
@@ -130,10 +143,13 @@ class Reports {
 
   static async getStatsOverview() {
     return new Promise((resolve, reject) => {
-      db.query("SELECT (SELECT COUNT(*) FROM usuarios) AS total_usuarios, (SELECT COUNT(*) FROM negocios) AS total_negocios, (SELECT COUNT(*) FROM empleados) AS total_empleados, (SELECT COUNT(*) FROM usuarios WHERE rol_id = 4) AS total_clientes;", (err, results) => {
-        if (err) return reject(err);
-        resolve(results);
-      });
+      db.query(
+        "SELECT (SELECT COUNT(*) FROM usuarios) AS total_usuarios, (SELECT COUNT(*) FROM negocios) AS total_negocios, (SELECT COUNT(*) FROM empleados) AS total_empleados, (SELECT COUNT(*) FROM usuarios WHERE rol_id = 4) AS total_clientes;",
+        (err, results) => {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
     });
   }
 }
