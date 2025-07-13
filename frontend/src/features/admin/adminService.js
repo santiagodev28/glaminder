@@ -1,5 +1,7 @@
 import api from "../../api/api";
 
+// Servicios para obtener los datos a mostrar en las tablas
+
 export const fetchTopEmployees = async (negocio_id) => {
     const token = localStorage.getItem("token");
     const res = await api.get(`/reportes/top-empleados/${negocio_id}`, {

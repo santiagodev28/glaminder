@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { fetchEmployeesByStore} from "../adminService.js";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import ButtonBack  from "../../../components/buttons/ButtonBack";
+// Componente para mostrar la lista de empleados
 const EmployeeList = () => {
     const [employees, setEmployees] = useState([]);
     const [showDeletedEmployees, setShowDeletedEmployees] = useState(false);
@@ -30,16 +31,9 @@ const EmployeeList = () => {
         <div className="p-4">
             <h1 className="text-xl font-bold mb-4">Lista de Empleados</h1>
 
-            <label className="mb-2 block">
-                <input
-                    type="checkbox"
-                    checked={showDeletedEmployees}
-                    onChange={() => setShowDeletedEmployees(prev => !prev)}
-                />
-                <span className="ml-2">Mostrar empleados eliminados</span>
-            </label>
+            
 
-            <table className="w-full border-collapse border border-gray-300">
+            <table className="w-full border-collapse border border-gray-300 mb-4">
                 <thead className="bg-gray-100">
                     <tr>
                         <th className="border p-2">Nombre</th>
@@ -64,9 +58,7 @@ const EmployeeList = () => {
                     ))}
                 </tbody>
             </table>
-            <Link to={`/admin/negocios/${negocio_id}/tiendas`}>
-                <button className="bg-blue-500 text-white p-2 mt-4 rounded-md">Volver</button>
-            </Link>
+            <ButtonBack to={`/admin/negocios/${negocio_id}/tiendas`} />
         </div>
     );
 };

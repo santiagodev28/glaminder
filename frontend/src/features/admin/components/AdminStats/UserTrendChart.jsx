@@ -2,6 +2,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useEffect, useState } from "react";
 import { fetchUserPerMonth } from "../../adminService";
 
+// Componente para mostrar los usuarios registrados por mes
 const UserTrendChart = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);

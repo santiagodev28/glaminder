@@ -3,6 +3,7 @@ import { Award } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { fetchTopEmployees } from "../../adminService";
 
+// Componente para mostrar los empleados más agendados por negocio
 const TopEmployees = () => {
     const { negocio_id } = useParams();
     const [empleados, setEmpleados] = useState([]);

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import api from "../../../api/api";
 import RoleFilter from "./RoleFilter";
 import EditUserModal from "../../../components/modals/EditUserModal";
+import ButtonBack  from "../../../components/buttons/ButtonBack";
 
+// Componente para mostrar la tabla de usuarios
 const UserAdmin = () => {
     const [users, setUsers] = useState([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -134,12 +135,7 @@ const UserAdmin = () => {
                         ? "Mostrar Usuarios Activos"
                         : "Mostrar Usuarios Eliminados"}
                 </button>
-                <Link
-                    to="../admin"
-                    className="text-center w-full bg-slate-600 py-2 px-4 rounded text-white hover:bg-slate-700"
-                >
-                    Volver
-                </Link>
+                <ButtonBack to="/admin/dashboard" />
             </div>
             <EditUserModal
                 isOpen={isEditModalOpen}

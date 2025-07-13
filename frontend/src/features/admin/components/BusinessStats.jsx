@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import ButtonBack  from "../../../components/buttons/ButtonBack";
 
 import { fetchTopEmployees, fetchTopServices, fetchTopStores, fetchAppointmentsTrends } from "../adminService";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
+// Componente para mostrar las estadísticas de un negocio
 const BussinesStats = () => {
     const { negocio_id } = useParams();
     const [topEmployees, setTopEmployees] = useState([]);
@@ -65,7 +66,7 @@ const BussinesStats = () => {
                 </ul>
             </section>
 
-            <section className="flex flex-col gap-2">
+            <section className="flex flex-col gap-2 mb-4">
                 <h2 className="text-lg font-bold">Agendamientos por mes</h2>
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={appointmentsTrends}>
@@ -76,12 +77,8 @@ const BussinesStats = () => {
                     </BarChart>
                 </ResponsiveContainer>
             </section>
+            <ButtonBack to="/admin/negocios" />
             </div>
-            <Link to={`/admin/negocios`} className="text-blue-600 hover:underline">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Volver a la lista de negocios
-                </button>
-            </Link>
         </div>
     )
 }

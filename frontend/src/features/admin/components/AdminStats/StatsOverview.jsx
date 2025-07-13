@@ -3,6 +3,7 @@ import { Users, Building2, UserCheck, Group } from "lucide-react";
 import { useState, useEffect } from "react";
 import { fetchStatsOverview } from "../../adminService";
 
+// Mapeo de íconos para las estadísticas
 const iconMap = {
   usuarios: Users,
   negocios: Building2,
@@ -10,6 +11,7 @@ const iconMap = {
   clientes: Group,
 };
 
+// Componente para mostrar las estadísticas generales
 const StatsOverview = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);

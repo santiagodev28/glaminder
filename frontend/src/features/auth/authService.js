@@ -1,5 +1,7 @@
 import api from "../../api/api.js";
 
+// Servicios para el login y registro
+
 export const loginUser = async (email, password) => {
     try {
         const res = await api.post("/auth/ingresar", {

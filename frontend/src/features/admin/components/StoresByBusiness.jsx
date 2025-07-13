@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchStoresByBusiness } from "../adminService";
 import { useParams, Link } from "react-router-dom";
-
+import ButtonBack  from "../../../components/buttons/ButtonBack";
+// Componente para mostrar las tiendas de un negocio
 const StoresByBusinessTable = () => {
     const { negocio_id } = useParams();
     const [stores, setStores] = useState([]);
@@ -19,11 +20,11 @@ const StoresByBusinessTable = () => {
     }, [negocio_id]);
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
+        <div className="min-h-screen bg-gray-100 p-6 flex flex-col gap-4">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
             <h1 className="text-2xl font-bold mb-4">Tiendas del Negocio</h1>
 
-            <table className="w-full border-collapse border border-gray-300">
+            <table className="w-full border-collapse border border-gray-300 mb-4 ">
                 <thead className="bg-gray-100">
                     <tr className="border border-gray-300">
                         <th className="p-2 border">Nombre</th>
@@ -35,7 +36,7 @@ const StoresByBusinessTable = () => {
                         <th className="p-2 border">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody >
                     {stores.map((s) => (
                         <tr key={s.tienda_id}>
                             <td className="p-2 border">{s.tienda_nombre}</td>
@@ -56,8 +57,9 @@ const StoresByBusinessTable = () => {
                     ))}
                 </tbody>
             </table>
+            <ButtonBack to="/admin/negocios" />
             </div>
-            <Link to="../admin/negocios" className="text-center w-full bg-slate-600 py-2 px-4 rounded text-white hover:bg-slate-700">Volver</Link>
+            
         </div>
 
     )

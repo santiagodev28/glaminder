@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { registerUser } from "../authService";
 import { Link } from "react-router-dom";
 
+// Componente para el formulario de registro
 const RegisterForm = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");

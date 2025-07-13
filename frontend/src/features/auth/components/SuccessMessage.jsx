@@ -1,3 +1,4 @@
+// Componente para mostrar el mensaje de éxito
 const SuccessMessage = ({ show, message }) => {
     return (
         <div

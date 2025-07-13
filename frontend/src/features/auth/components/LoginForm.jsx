@@ -4,6 +4,7 @@ import { loginUser } from "../authService";
 import { Link } from "react-router-dom";
 import SuccessMessage from "./SuccessMessage"; 
 
+// Componente para el formulario de login
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -41,7 +42,7 @@ const LoginForm = () => {
         localStorage.setItem("usuario_apellido", usuario.usuario_apellido);
         localStorage.setItem("rol_id", usuario.rol_id);
 
-        if (usuario.rol_id === 1) navigate("/admin");
+        if (usuario.rol_id === 1) navigate("/admin/dashboard");
         else if (usuario.rol_id === 2) navigate("/propietario");
         else if (usuario.rol_id === 3) navigate("/empleado");
         else if (usuario.rol_id === 4) navigate("/cliente");

@@ -62,7 +62,7 @@ class Reports {
       );
     });
   }
-
+  // Empleados más agendados por negocio
   static async getTopEmployeesByAppointments(negocio_id) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -75,7 +75,7 @@ class Reports {
       );
     });
   }
-
+  // Servicios más agendados por negocio
   static async getTopServicesByAppointments(negocio_id) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -88,7 +88,7 @@ class Reports {
       );
     });
   }
-
+  // Tiendas más agendadas por negocio
   static async getTopStores(negocio_id) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -101,7 +101,7 @@ class Reports {
       );
     });
   }
-
+  // Negocios con más calificaciones
   static async getTopBusiness(negocio_id) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -114,7 +114,7 @@ class Reports {
       );
     });
   }
-
+  // Agendamientos por mes
   static async getAppointmentsTrends(negocio_id) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -127,7 +127,7 @@ class Reports {
       );
     });
   }
-
+  // Usuarios registrados por mes
   static async getUserPerMonth(usuario_fecha_registro) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -140,7 +140,7 @@ class Reports {
       );
     });
   }
-
+  // Resumen de estadísticas
   static async getStatsOverview() {
     return new Promise((resolve, reject) => {
       db.query(

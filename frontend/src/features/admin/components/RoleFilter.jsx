@@ -1,3 +1,4 @@
+// Componente para filtrar por rol
 const RoleFilter = ({ selected, onChange }) => {
     return (
         <select
