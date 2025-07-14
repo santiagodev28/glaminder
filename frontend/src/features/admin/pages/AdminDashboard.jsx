@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   const lname = localStorage.getItem("usuario_apellido");
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-8 space-y-6 bg-gray-300">
       <h1 className="text-2xl font-bold">
         Bienvenido {name} {lname}
       </h1>
